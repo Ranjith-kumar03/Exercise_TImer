@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
                          exercise= new AsyncTask_Exercise();
                         exercise.execute(k * 60);
                         et1.setVisibility(View.GONE);
+                        tv3.setText("0");
                         btn1.setText("STOP");
                     }
 
@@ -129,25 +130,40 @@ public class MainActivity extends AppCompatActivity {
             super.onProgressUpdate(values);
             Random random= new Random();
             int nextInt_m = random.nextInt(0xffffff + 5);
-            String colorCode_m = String.format("#%06x", nextInt_m);
+            final String colorCode_m = String.format("#%06x", nextInt_m);
             int nextInt_s = random.nextInt(0xffffff + 10);
-            String colorCode_s = String.format("#%06x", nextInt_s);
+            final String colorCode_s = String.format("#%06x", nextInt_s);
             int nextInt_sets = random.nextInt(0xffffff + 15);
-            String colorCode_sets = String.format("#%06x", nextInt_sets);
+            final String colorCode_sets = String.format("#%06x", nextInt_sets);
             //tv3.setVisibility(View.VISIBLE);
-            int min=(values[0]/60);
-            tv3.setText(String.valueOf(min));
-            if(min!=0) {
-                tv3.setTextColor(Color.parseColor(colorCode_m));
-            }
+            final int min=(values[0]/60);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if(min!=0) {
+                        tv3.setTextColor(Color.parseColor(colorCode_m));
+                        tv3.setText(String.valueOf(min));
+                    }
+
+                }
+            });
+
+
 
             int k=Integer.parseInt(et1.getText().toString());
-            int l=values[0];
+            final int l=values[0];
 
             Log.d(TAG, "onProgressUpdate: valoe of K is"+k);
             Log.d(TAG, "onProgressUpdate: valoe of l is"+l);
-            tv1.setText(String.valueOf(l-(min*60)));
-            tv1.setTextColor(Color.parseColor(colorCode_s));
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    tv1.setTextColor(Color.parseColor(colorCode_s));
+                    tv1.setText(String.valueOf(l-(min*60)));
+                }
+            });
+
             if((k*60)==l)
             {
 
@@ -160,8 +176,15 @@ public class MainActivity extends AppCompatActivity {
                 mediaPlayer.setLooping(true);
 
                 j=j+1;
-                tv2.setText(String.valueOf("Set-"+j));
-                tv2.setTextColor(Color.parseColor(colorCode_sets));
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        tv2.setTextColor(Color.parseColor(colorCode_sets));
+                        tv2.setText(String.valueOf("Set-"+j));
+                    }
+                });
+
 
                //
 
